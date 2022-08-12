@@ -22,16 +22,17 @@
               <main>
               <div class="container-quiz">
                 <h3 id="label">Qual o significado de:</h3>
-                <h3 class="palavraTraduzir" id="palavra">Azul</h3>
+                <h3 class="palavraTraduzir" id="palavra">Cor</h3>
 
                 <input class="resposta" type="text" id="resposta"></input></br>
-                <div id="parabens"></div>
+                <div id="div-voltar">
+                <button type="submit" class="btn" id="voltar" onclick="location.href='index.html'" hidden="true">Voltar</button>
+                </div>
                 <button class="btn" id="verificar" type="submit" onclick="verificar()">Verificar</button>
             <div id="div-resposta">
               <h5 class="resultado" id="resultado"></h5>
               <h5 class="pts" id="pts"></h5>
-              <div id="verSign">
-              </div>
+              <button class="btn" type="submit" id="verSignificado" onclick="verSignificado()" hidden="true">Resposta</button>
               <h5 id="pontuacao">Pontuação: 100</h5>
               </div>
         </div>

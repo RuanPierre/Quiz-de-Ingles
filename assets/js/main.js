@@ -1,68 +1,58 @@
-function alertaEmBreve() {
-    alert ("Quiz em construção :)");
-    }
+const alertaEmBreve = () => alert ("Quiz em construção :)");
+    
 function resultadoCerto() {
         if (contAcerto == 0) {
-          if (contErro != 5) {
-            document.getElementById("verSignificado").remove();
-          }
-      
-          resultado = document.getElementById("resultado");
-          resultado.innerHTML = "Parabéns, você acertou! Continue assim.";
-          pontos = document.getElementById("pts");
-          pontos.innerHTML = "+10 pts";
-          pont = document.getElementById("pontuacao");
-          pontuação += 10;
-          pont.innerHTML = "Pontuação: " + pontuação;
+          
+          document.getElementById("verSignificado").setAttribute("hidden", "true");
+          document.getElementById("resultado").innerHTML = "Parabéns, você acertou! Continue assim.";
+          document.getElementById("pts").innerHTML = "+40 pts";
+          pontuação += 40;
+          document.getElementById("pontuacao").innerHTML = "Pontuação: " + pontuação;
           contAcerto = 1;
           contAcertoTotal += 1;
-          console.log("acertei" + contAcertoTotal);
-          myTimeout = setTimeout(proximo, 1750);
+          myTimeout = setTimeout(proximo, 1500);
         }
       }
       
-      function resultadoErrado() {
-        pontuação -= 5;
+function resultadoErrado() {
+        pontuação -= 8;
         contErro -= 1;
         if (contErro < 1) {
           verSignificado();
         } else {
-          resultado = document.getElementById("resultado");
-          resultado.innerHTML =
+          document.getElementById("resultado").innerHTML =
             "Infelizmente você errou, " + contErro + " tentativa(s) restante(s)";
-          pontos = document.getElementById("pts");
-          pontos.innerHTML = "-5 pts";
-          document.getElementById("verSign").innerHTML =
-            '<button class="btn" type="submit" id="verSignificado" onclick="verSignificado()">Resposta</button>';
+          document.getElementById("pts").innerHTML = "-8 pts";
+          document.getElementById("verSignificado").removeAttribute("hidden");
         }
-        pont = document.getElementById("pontuacao");
-        pont.innerHTML = "Pontuação: " + pontuação;
+        document.getElementById("pontuacao").innerHTML = "Pontuação: " + pontuação;
         document.getElementById("resposta").value = "";
       }
       
-      function proximo() {
+function proximo() {
         contVerResultado = 0;
         contAcerto = 0;
         contErro = 5;
       
-        if (contPalavra < listaTraduzir.length) {
-          palavraTraduzir = listaTraduzir[contPalavra];
-          palavraTraduzida = listaTraduzida[contPalavra];
-      
-          palavra = document.getElementById("palavra");
-          palavra.innerHTML = palavraTraduzir;
+        if (contPalavra <= Object.keys(palavras).length) {
+          if (contPalavra % 2 == 1){
+          palavraTraduzir = palavrasEmb[contPalavra-1].en;
+          palavraTraduzida = palavrasEmb[contPalavra-1].pt;
+          } else {
+          palavraTraduzir = palavrasEmb[contPalavra-1].pt;
+          palavraTraduzida = palavrasEmb[contPalavra-1].en;
+          }
+          document.getElementById("palavra").innerHTML = palavraTraduzir;
           contPalavra += 1;
-          resultado = document.getElementById("resultado");
-          resultado.innerHTML = " ";
-          pontos = document.getElementById("pts");
-          pontos.innerHTML = " ";
+          document.getElementById("resultado").innerHTML = "";
+          document.getElementById("pts").innerHTML = "";
           document.getElementById("resposta").value = "";
         } else {
           final();
         }
       }
       
-      function verificar() {
+function verificar() {
         if (contVerResultado == 0 && contAcerto == 0) {
           resposta = document.getElementById("resposta").value;
           resposta = resposta
@@ -80,7 +70,7 @@ function resultadoCerto() {
         }
       }
       
-      document.addEventListener("keypress", function (e) {
+document.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
           var btn = document.querySelector("#verificar");
       
@@ -88,17 +78,15 @@ function resultadoCerto() {
         }
       });
       
-      function verSignificado() {
+function verSignificado() {
         contVerResultado = 1;
-        document.getElementById("verSignificado").remove();
-        resultado = document.getElementById("resultado");
-        resultado.innerHTML = "O significado era: " + palavraTraduzida;
-        pontos = document.getElementById("pts");
-        pontos.innerHTML = "";
-        myTimeout = setTimeout(proximo, 4000);
+        document.getElementById("verSignificado").setAttribute("hidden", "true");
+        document.getElementById("resultado").innerHTML = "O significado era: " + palavraTraduzida;
+        document.getElementById("pts").innerHTML = "";
+        myTimeout = setTimeout(proximo, 2000);
       }
       
-      function final() {
+function final() {
         listaRemover = [
           "resposta",
           "verificar",
@@ -109,128 +97,54 @@ function resultadoCerto() {
         for (i = 0; i < listaRemover.length; i++) {
           document.getElementById(listaRemover[i]).remove();
         }
-        txt = document.getElementById("label");
-        txt.innerHTML =
+        document.getElementById("label").innerHTML =
           "Você acertou um total de " +
-          contAcertoTotal +
-          "/" +
-          listaTraduzir.length +
-          " questões";
-        txt = document.getElementById("palavra");
-        txt.innerHTML = "Sua pontuação foi: " + pontuação;
-        var img = document.createElement("IMG");
-        img.src =
-          "https://img.freepik.com/free-vector/congratulations-poster-celebration-vector-illustration-background_95561-59.jpg?size=338&ext=jpg";
-        document.getElementById("parabens").appendChild(img);
+          (contAcertoTotal / Object.keys(palavras).length)*100 +
+          "% das questões";
+        document.getElementById("palavra").innerHTML = "Sua pontuação foi: " + pontuação;
+        document.getElementById("voltar").removeAttribute("hidden");
       }
-      listaTraduzir = [
-        "Blue",
-        "Dois",
-        "Red",
-        "Roxo",
-        "Yellow",
-        "Um",
-        "Green",
-        "Três",
-        "Four",
-        "Cinco",
-        "Zero",
-        "Seis",
-        "Seven",
-        "Oito",
-        "Nine",
-        "Dez",
-        "Branco",
-        "Doze",
-        "Thirteen",
-        "Preto",
-        "Fifteen",
-        "Dezesseis",
-        "Seventeen",
-        "Dezoito",
-        "Nineteen",
-        "Vinte",
-        "Thirty",
-        "Violet",
-        "Fifty",
-        "Sessenta",
-        "Seventy",
-        "Oitenta",
-        "Laranja",
-        "Cem",
-        "Two Hundred",
-        "Trezentos",
-        "Rosa",
-        "Marrom",
-        "Six Hundred",
-        "Setecentos",
-        "Eight Hundred",
-        "Novecentos",
-        "One Thousand",
-        "Eleven",
-        "Cinza",
-        "Ninety",
-        "Quinhentos",
-        "Quatorze",
-        "Four Hundred",
-        "Quarenta",
-        "Burgundy"
-      ];
-      listaTraduzida = [
-        "Azul",
-        "Two",
-        "Vermelho",
-        "Purple",
-        "Amarelo",
-        "One",
-        "Verde",
-        "Three",
-        "Quatro",
-        "Five",
-        "Zero",
-        "Six",
-        "Sete",
-        "Eight",
-        "Nove",
-        "Ten",
-        "White",
-        "Twelve",
-        "Treze",
-        "Black",
-        "Quinze",
-        "Sixteen",
-        "Dezessete",
-        "Eighteen",
-        "Dezenove",
-        "Twenty",
-        "Trinta",
-        "Violeta",
-        "Cinquenta",
-        "Sixty",
-        "Setenta",
-        "Eighty",
-        "Orange",
-        "One Hundred",
-        "Duzentos",
-        "Three Hundred",
-        "Pink",
-        "Brown",
-        "Seiscentos",
-        "Seven Hundred",
-        "Oitocentos",
-        "Nine Hundred",
-        "Mil",
-        "Onze",
-        "Grey",
-        "Noventa",
-        "Five Hundred",
-        "Fourteen",
-        "Quatrocentos",
-        "Forty",
-        "Vinho"
-      ];
-      
-      pontuação = 100;
-      contPalavra = 0;
-      contAcertoTotal = 0;
-      proximo();
+
+function shuffleArray(arr) {
+        for (let i = Object.keys(arr).length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+palavras = {
+      0: {"pt": "Um", "en": "One" },
+      1: {"pt": "Dois", "en": "Two" },
+      2: {"pt": "Três", "en": "Three" },
+      3: {"pt": "Quatro", "en": "Four" },
+      4: {"pt": "Cinco", "en": "Five" },
+      5: {"pt": "Seis", "en": "Six" },
+      6: {"pt": "Sete", "en": "Seven" },
+      7: {"pt": "Oito", "en": "Eight" },
+      8: {"pt": "Nove", "en": "Nine" },
+      9: {"pt": "Dez", "en": "Ten" },
+      10: {"pt": "Vinte", "en": "Twenty" },
+      11: {"pt": "Cinquenta", "en": "Fifty" },
+      12: {"pt": "Cem", "en": "Hundred" },
+      13: {"pt": "Azul", "en": "Blue" },
+      14: {"pt": "Vermelho", "en": "Red" },
+      15: {"pt": "Roxo", "en": "Purple" },
+      16: {"pt": "Amarelo", "en": "Yellow" },
+      17: {"pt": "Verde", "en": "Green" },
+      18: {"pt": "Branco", "en": "White" },
+      19: {"pt": "Preto", "en": "Black" },
+      20: {"pt": "Violeta", "en": "Violet" },
+      21: {"pt": "Laranja", "en": "Orange" },
+      22: {"pt": "Rosa", "en": "Pink" },
+      23: {"pt": "Marrom", "en": "Brown" },
+      24: {"pt": "Vinho", "en": "Burgundy" },
+
+};
+
+pontuação = 0;
+contPalavra = 1;
+contAcertoTotal = 0;
+palavrasEmb = shuffleArray(palavras);
+console.log(palavrasEmb);
+proximo();
