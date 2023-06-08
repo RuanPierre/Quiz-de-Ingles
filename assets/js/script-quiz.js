@@ -1,15 +1,12 @@
 function resultadoCerto() {
-  if (contAcerto == 0) {
 
-    document.getElementById("verSignificado").setAttribute("hidden", "true");
-    document.getElementById("resultado").innerHTML = "Parabéns, você acertou! Continue assim.";
-    document.getElementById("pts").innerHTML = "+40 pts";
-    pontuação += 40;
-    document.getElementById("pontuacao").innerHTML = "Pontuação: " + pontuação;
-    contAcerto = 1;
-    contAcertoTotal += 1;
-    myTimeout = setTimeout(proximo, 1500);
-  }
+  document.getElementById("verSignificado").setAttribute("hidden", "true");
+  document.getElementById("resultado").innerHTML = "Parabéns, você acertou! Continue assim.";
+  document.getElementById("pts").innerHTML = "+40 pts";
+  pontuação += 40;
+  contAcerto = 1;
+  contAcertoTotal += 1;
+  myTimeout = setTimeout(proximo, 1500);
 }
 
 function resultadoErrado() {
@@ -23,7 +20,6 @@ function resultadoErrado() {
     document.getElementById("pts").innerHTML = "-8 pts";
     document.getElementById("verSignificado").removeAttribute("hidden");
   }
-  document.getElementById("pontuacao").innerHTML = "Pontuação: " + pontuação;
   document.getElementById("resposta").value = "";
 }
 
@@ -32,19 +28,20 @@ function proximo() {
   contAcerto = 0;
   contErro = 5;
 
-  if (contPalavra <= Object.keys(palavras).length) {
+
+  if (contPalavra < Object.keys(palavras).length) {
     if (contPalavra % 2 == 1) {
-      palavraTraduzir = palavras[contPalavra - 1].en[0];
-      palavraTraduzida = palavras[contPalavra - 1].pt;
+      palavraTraduzir = palavras[contPalavra].en[0];
+      palavraTraduzida = palavras[contPalavra].pt;
     } else {
-      palavraTraduzir = palavras[contPalavra - 1].pt[0];
-      palavraTraduzida = palavras[contPalavra - 1].en;
+      palavraTraduzir = palavras[contPalavra].pt[0];
+      palavraTraduzida = palavras[contPalavra].en;
     }
     document.getElementById("palavra").innerHTML = palavraTraduzir;
-    contPalavra += 1;
     document.getElementById("resultado").innerHTML = "";
     document.getElementById("pts").innerHTML = "";
     document.getElementById("resposta").value = "";
+    contPalavra += 1;
   } else {
     final();
   }
@@ -53,7 +50,7 @@ function proximo() {
 function verificar() {
   let acertou = 0;
 
-  if (contVerResultado == 0 && contAcerto == 0) {
+  if (contVerResultado == 0 && contAcerto == 0) { // Se o usuario ja acertou ou viu o resultado nao são contabilizados pontos
 
     resposta = document.getElementById("resposta").value;
     resposta = resposta
@@ -73,6 +70,7 @@ function verificar() {
       resultadoErrado();
     }
 
+    document.getElementById("pontuacao").innerHTML = "Pontuação: " + pontuação;
   }
   else {
     document.getElementById("resposta").value = "";
@@ -90,7 +88,7 @@ document.addEventListener("keypress", function (e) {
 function verSignificado() {
   contVerResultado = 1;
   document.getElementById("verSignificado").setAttribute("hidden", "true");
-  document.getElementById("resultado").innerHTML = "O significado era: " + palavraTraduzida;
+  document.getElementById("resultado").innerHTML = "O significado era: " + palavraTraduzida[0];
   document.getElementById("pts").innerHTML = "";
   myTimeout = setTimeout(proximo, 2000);
 }
@@ -106,11 +104,25 @@ function final() {
   for (i = 0; i < listaRemover.length; i++) {
     document.getElementById(listaRemover[i]).remove();
   }
+  let porcentagem = Math.round((contAcertoTotal / Object.keys(palavras).length) * 100)
   document.getElementById("label").innerHTML =
     "Você acertou um total de " +
-    (contAcertoTotal / Object.keys(palavras).length) * 100 +
+    porcentagem +
     "% das questões";
   document.getElementById("palavra").innerHTML = "Sua pontuação foi: " + pontuação;
+
+  var imgFinal = document.getElementById("imgFinal")
+
+  if (porcentagem > 50) {
+    imgFinal.setAttribute("src", "assets/img/muito_ponto.jpeg");
+    imgFinal.setAttribute("alt", "imagem para muitos pontos")
+  }
+  else {
+    imgFinal.setAttribute("src", "assets/img/pouco_ponto.jpeg");
+    imgFinal.setAttribute("alt", "imagem para poucos pontos")
+  }
+
+  imgFinal.removeAttribute("hidden");
   document.getElementById("voltar").removeAttribute("hidden");
 }
 
@@ -123,7 +135,7 @@ function shuffleArray(arr) {
 }
 
 let pontuação = 0;
-let contPalavra = 1;
+let contPalavra = 0;
 let contAcerto = 0;
 let contAcertoTotal = 0;
 let contVerResultado = 0;
