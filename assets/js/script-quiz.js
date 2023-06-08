@@ -113,13 +113,17 @@ function final() {
 
   var imgFinal = document.getElementById("imgFinal")
 
-  if (porcentagem > 50) {
+  if (porcentagem > 50 && porcentagem < 100) {
     imgFinal.setAttribute("src", "assets/img/muito_ponto.jpeg");
     imgFinal.setAttribute("alt", "imagem para muitos pontos")
   }
-  else {
+  else if (porcentagem < 50) {
     imgFinal.setAttribute("src", "assets/img/pouco_ponto.jpeg");
     imgFinal.setAttribute("alt", "imagem para poucos pontos")
+  }
+  else if (porcentagem == 100) {
+    imgFinal.setAttribute("src", "assets/img/pontos_total.jpeg");
+    imgFinal.setAttribute("alt", "imagem para pontuacao maxima")
   }
 
   imgFinal.removeAttribute("hidden");
