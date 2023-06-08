@@ -210,7 +210,6 @@ h3 {
 #pontuacao {
 
   color: white;
-  position: absolute;
-  top: 470px;
+  position: relative;
 
 }
